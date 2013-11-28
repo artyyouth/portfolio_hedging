@@ -28,6 +28,8 @@ sv <- xts2df(Ad(SPX))
 x <- merge(p, sv, by='Date')
 p <- df2xts(x)
 pv <- p[,'val']
+# Calculate the yearly return
+as.data.frame(periodReturn(pv, 'yearly', subset="2011/"))
 sv <- p[,'SPX.Adjusted']
 x <- cbind(sv, pv)
 
