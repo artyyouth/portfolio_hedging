@@ -28,10 +28,19 @@ sv <- xts2df(Ad(SPX))
 x <- merge(p, sv, by='Date')
 p <- df2xts(x)
 pv <- p[,'val']
-# Calculate the yearly return
+colnames(pv)[1] <- "Portfolio"
+# Calculate the yearly return of unhedged portfolio
 as.data.frame(periodReturn(pv, 'yearly', subset="2011/"))
 sv <- p[,'SPX.Adjusted']
 x <- cbind(sv, pv)
+
+# Read from hedged portfolio file
+h <- read.csv('hedged.port.csv', header=T)
+h$Date <- as.character(as.POSIXct(h$Date,format='%m/%d/%Y'))
+hv <- df2xts(h)
+# Calculate the yearly return of hedged portfolio
+as.data.frame(periodReturn(hv, 'yearly', subset="2011/"))
+x <- cbind(x, hv)
 
 library(ggplot2)
 library(reshape2)
